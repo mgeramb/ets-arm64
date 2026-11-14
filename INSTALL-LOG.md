@@ -47,7 +47,9 @@ limactl --version        # -> limactl version 2.3.0
 
 Gemeinsame Ordner:
 - `/Users/mgeramb/ETS6` → `/mnt/ets6` (nur lesen)
-- Arbeitsordner (`share/`) → `/mnt/share` (schreibbar)
+- Arbeitsordner (`share/`) → `/mnt/share` (schreibbar) – nur während der Entwicklung, am 2026-11-14 entfernt (§23)
+
+➡️ Für Neuinstallationen: `limactl create --name=wine-arm64 vm/wine-arm64.yaml` (ohne `/mnt/share`).
 
 ```bash
 limactl create --name=wine-arm64 --vm-type=vz --cpus=8 --memory=12 --disk=40 \
@@ -305,8 +307,7 @@ ln -sfn /mnt/ets-daten ~/.wine-ets/dosdevices/h:
 ```
 ✅ Lesen/Schreiben in beide Richtungen getestet (Datei vom Mac in Wine lesbar, von Wine angelegte Datei
 und Ordner sofort im Finder sichtbar).
-⚠️ Der Mount `/mnt/share` zeigt noch auf einen temporären Arbeitsordner → im Installer durch einen festen
-Ordner ersetzen oder entfernen.
+✅ Temporärer Mount `/mnt/share` entfernt (§23).
 
 ### Bekannt
 - „ETS neu starten“ aus ETS heraus funktioniert nicht (vermutlich startet ETS dabei den x86-Launcher).
@@ -387,6 +388,19 @@ ets-arm64/scripts/make-app.sh            # -> ~/Applications/ETS6 ARM64.app (Zie
 `ets-start.sh`: **Schutz gegen Doppelstart** – läuft `ETS6N.exe` bereits in der VM, kein Neustart (sonst würde
 `wineserver -k` ein offenes Projekt ohne Speichern beenden), nur Mitteilung „ETS läuft bereits“. Erzwingen: `ETS_FORCE_RESTART=1`.
 ✅ Getestet bei laufendem ETS (Mitteilung, ETS bleibt offen) und als Kaltstart über die App: Brücke „verbunden“, ETS „User is licensed“.
+
+## 23. Temporären Entwicklungs-Mount entfernt ✅
+
+```bash
+limactl stop wine-arm64
+limactl edit wine-arm64 --tty=false --set '.mounts |= map(select(.mountPoint != "/mnt/share"))'
+limactl start wine-arm64
+```
+Nach dem VM-Neustart: Mounts `/mnt/ets6`, `/mnt/ets-daten`; Dienst `uhid-bridge` aktiv, Modul `uhid` geladen
+(automatisch). Kaltstart über „ETS6 ARM64.app“: Brücke verbunden, Host „53 Funktionen … 0 fehlen“,
+ETS „pre-check: User is licensed“ ✅.
+Repo-Ergänzungen: `vm/wine-arm64.yaml` (Lima-Vorlage), `vm/system/*` + `vm/install-system.sh`,
+`wine/ets-settings.reg` (Registry, per `wine regedit /S` importiert und geprüft), `CLAUDE.md`.
 
 ---
 
