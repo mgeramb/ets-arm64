@@ -402,6 +402,47 @@ ETS „pre-check: User is licensed“ ✅.
 Repo-Ergänzungen: `vm/wine-arm64.yaml` (Lima-Vorlage), `vm/system/*` + `vm/install-system.sh`,
 `wine/ets-settings.reg` (Registry, per `wine regedit /S` importiert und geprüft), `CLAUDE.md`.
 
+## 24. Fixes aus dem CrossOver-Projekt übernommen
+
+Vergleich mit github.com/vbartusevicius/knx-ets-on-codeweavers-crossover (x86/x64-Wine unter Rosetta,
+Installer `install-ets.sh`). Für uns relevant:
+
+### 24a. Wine-Patch 0006: `Installer.OpenDatabase` mit numerischem OpenMode ✅ (WineHQ-Bug 60062)
+ETS öffnet Geräte-Plugin-MSIs per Automation `OpenDatabase(pfad, 0)` (ReadOnly). Wine las OpenMode als
+`VT_BSTR` → 0 wurde zum Ausgabepfad `"0"` → beschreibbare Kopie statt read-only; beim Setzen eines
+KNX-Secure-Projektpassworts beendet sich ETS kommentarlos. Auch in unserem Wine 11.21 vorhanden.
+Fix (`patches/0006-msi-opendatabase-integer-openmode.patch`, `dlls/msi/automation.c`): erst `VT_I4`
+(als `MSIDBOPEN_*`-Konstante), sonst `VT_BSTR` (echter Ausgabepfad). Das CrossOver-Projekt patcht dagegen
+die fertige msi.dll binär.
+```bash
+make -C ~/src/build-11.21 -j8 dlls/msi/aarch64-windows/msi.dll
+sudo install -m 0644 ~/src/build-11.21/dlls/msi/aarch64-windows/msi.dll /opt/wine-arm64/lib/wine/aarch64-windows/
+```
+Test `tests/msiopen.cs` (legt per C-API eine MSI an, öffnet sie per Automation mit 0/1/2):
+`WINEDEBUG=trace+msi wine msiopen.exe 2>&1 | grep MSI_OpenDatabaseW`
+- ohne Patch: `L"0"`, `L"1"`, `L"2"` ❌ · mit Patch: `(null)`, `#0001`, `#0002` ✅
+- ⚠️ Eine Schreibprobe (`CREATE TABLE`) taugt nicht als Test: auch read-only akzeptiert Wine sie im Speicher.
+
+### 24b. Laufzeitschalter ✅ (ohne ETS-Dateien zu ändern)
+- Host-Config `C:\ets-arm64\ETS6N.exe.config` wird jetzt per `scripts/make-host-config.py` aus der
+  ETS-Config erzeugt + `<legacyCorruptedStateExceptionsPolicy enabled="true"/>` (prozessweit, nur aus der
+  EXE-Config) + `AppContextSwitchOverrides Switch.System.Windows.Controls.Grid.StarDefinitionsCanExceedAvailableSpace=true`.
+  ```bash
+  python3 -I make-host-config.py /mnt/ets6/ETS6N.exe.config ~/.wine-ets/drive_c/ets-arm64/ETS6N.exe.config
+  ```
+- Host setzt den WPF-Schalter zusätzlich per `AppContext.SetSwitch` in der ETS-AppDomain.
+✅ ETS startet, Dongle-Lizenz „User is licensed“, keine neuen Fehler im ETS-Log.
+
+### 24c. EIBA-sc-Kompatibilitätsschicht ⚠️ offen
+Plugin-Geräte-Import („Value cannot be null“ / `0x80070716`, WineHQ-Bug 60377) braucht `EIBA.*.dll` in
+`C:\Program Files (x86)\Common Files\EIBA sc` (+ `EIBA.Interop.*.dll`, `EIBA.DownloadImageHelper.dll`
+im ETS-Ordner). Bei uns leer, weil nur der ETS-Programmordner kopiert wurde – die Dateien installiert der
+ETS-Installer aus seinem Kompatibilitäts-MSI. Quelle nötig: `Ets6Setup.exe` oder der Ordner aus Windows.
+
+### Nicht übernommen
+`EtecDOM.dll`-Patch (nur ETS 5.7.1428), case-sensitives APFS-Image (optional, Ursache unbestätigt),
+.NET 4.8 x86/x64 + VC++ (wir nutzen ARM64-.NET; VC++ nur für x86-Teile des Kompatibilitätsmodus).
+
 ---
 
 ## Offene Punkte / Ideen

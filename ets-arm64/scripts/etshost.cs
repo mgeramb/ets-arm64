@@ -121,6 +121,8 @@ class EtsHost {
   // läuft in der ETS-AppDomain
   public class Prep : MarshalByRefObject {
     public void Run(string dir) {
+      // WPF-Kompatibilitätsschalter für die ETS-AppDomain (wie in der Host-Config, siehe make-host-config.py)
+      AppContext.SetSwitch("Switch.System.Windows.Controls.Grid.StarDefinitionsCanExceedAvailableSpace", true);
       DisableNativeLibs(dir);
       if (!EnableDevKitArm64(dir)) { NativeLibAssembliesFallback(dir); }
       // Diagnose: Stack des Hauptthreads periodisch protokollieren (ETS_ARM64_WATCHDOG=Sekunden)

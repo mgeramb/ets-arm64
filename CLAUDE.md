@@ -18,14 +18,15 @@ Mac reproduziert. Sprache im Projekt (Doku, Kommentare, Commits): **Deutsch**.
 ## Architektur (Details: README.md, INSTALL-LOG.md)
 - **VM**: Lima `wine-arm64` (vz, Fedora 45 aarch64, Vorlage `vm/wine-arm64.yaml`). Grund: macOS nullt x18,
   hat 16-KB-Seiten und RWX nur mit `MAP_JIT` (gemessen mit `tools/macprobe.c`).
-- **Wine** 11.21 aarch64, `/opt/wine-arm64`, Quelltext `~/src/wine-11.21` (+ `ets-arm64/patches/0001–0005`),
+- **Wine** 11.21 aarch64, `/opt/wine-arm64`, Quelltext `~/src/wine-11.21` (+ `ets-arm64/patches/0001–0006`),
   Build `~/src/build-11.21`. Prefix `~/.wine-ets`.
 - **.NET 4.8.1 ARM64** aus `NDP481-x86-x64-AllOS-ENU.exe` (CAB `…arm64.cab`, CBS-Manifeste) →
   `scripts/21-install-netfx.py`; GAC_64 → GAC_ARM64 kopieren; `mscoree`-Shim `scripts/mscoree_shim.c`
   (gleiche Ordinals wie mscoreei, #24 NONAME, **kein** `_CorExeMain2` #142) nach system32 **und** FrameworkArm64.
 - **ETS-Start**: `C:\ets-arm64\ETS6.exe` (ARM64-Launcher, ETS6N prüft Elternprozessnamen „ETS6“, hält Mutex)
   → `C:\ets-arm64\ETS6N.exe` = Host (`scripts/etshost.cs`, eigene AppDomain, braucht eigene `.config` =
-  Kopie von ETS6N.exe.config) → `C:\Program Files (x86)\ETS6\ETS6N.exe`.
+  per `scripts/make-host-config.py` aus ETS6N.exe.config erzeugt, + Laufzeitschalter)
+  → `C:\Program Files (x86)\ETS6\ETS6N.exe`.
 - **Dongle**: CloudKit wird deaktiviert (nur x86/x64-Windows). DevKit: Host ruft den **Unix**-Lader auf
   (lädt `DevKit.so` über `C:\windows\system32\libdl.so` = `scripts/libdl_bridge.c`, CWD dabei `Z:\tmp`),
   bildet die 53 Funktionen per Exportname auf die **Windows**-Delegattypen ab (eigene Typen je Pfad!).
@@ -52,4 +53,5 @@ Analysewerkzeuge (`ets-arm64/tools/`): `pinv.cs` (P/Invokes), `typeinfo.cs`, `il
 ## Offen
 - Gesamt-Installationsskript (Lima-VM → Wine-Build → .NET → mscoree/libdl/Host → Schriften → Registry
   `wine/ets-settings.reg` → `vm/install-system.sh` → App). Bausteine liegen in `scripts/` und `vm/`.
+- EIBA-sc-Dateien für Plugin-Geräte-Import (aus Ets6Setup.exe/Windows, INSTALL-LOG §24c).
 - Cloud-Lizenz (nicht nativ möglich), Neustart aus ETS heraus, Patch 0003 noch nötig?, Wine-Upstream-MRs.

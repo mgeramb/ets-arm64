@@ -1,0 +1,51 @@
+From: ETS-ARM64 project
+Subject: [PATCH] msi: Accept an integer open mode in Installer.OpenDatabase.
+
+InstallerImpl_OpenDatabase() fetched the OpenMode argument as VT_BSTR, so the msiOpenDatabaseMode*
+constants were coerced to strings (0 -> "0") and MsiOpenDatabaseW() treated them as the path of an
+output database: ReadOnly opened a writable transacted copy named "0" instead of the original.
+KNX ETS 6 opens device plug-in packages read-only this way; setting a KNX-Secure project password
+then terminates ETS (WineHQ bug 60062). Try VT_I4 first and pass it as MSIDBOPEN_* constant,
+fall back to VT_BSTR for a real output path.
+Test: tests/msiopen.cs, WINEDEBUG=trace+msi -> MSI_OpenDatabaseW ... (null) instead of L"0".
+---
+--- a/dlls/msi/automation.c
++++ b/dlls/msi/automation.c
+@@ -1779,6 +1779,7 @@
+     MSIHANDLE hdb;
+     IDispatch* dispatch;
+     VARIANTARG varg0, varg1;
++    LPCWSTR persist;
+ 
+     if (!(wFlags & DISPATCH_METHOD))
+         return DISP_E_MEMBERNOTFOUND;
+@@ -1788,14 +1789,25 @@
+     if (FAILED(hr))
+         return hr;
+ 
++    /* OpenMode is either one of the msiOpenDatabaseMode* integer constants
++     * (MSIDBOPEN_*, passed as a pseudo string pointer) or the path of the
++     * output database. Coercing an integer to VT_BSTR would turn e.g. 0 into
++     * the path "0". */
+     VariantInit(&varg1);
+-    hr = DispGetParam(pDispParams, 1, VT_BSTR, &varg1, puArgErr);
+-    if (FAILED(hr))
+-        goto done;
++    hr = DispGetParam(pDispParams, 1, VT_I4, &varg1, puArgErr);
++    if (SUCCEEDED(hr))
++        persist = (LPCWSTR)(ULONG_PTR)V_I4(&varg1);
++    else
++    {
++        hr = DispGetParam(pDispParams, 1, VT_BSTR, &varg1, puArgErr);
++        if (FAILED(hr))
++            goto done;
++        persist = V_BSTR(&varg1);
++    }
+ 
+     V_VT(pVarResult) = VT_DISPATCH;
+ 
+-    ret = MsiOpenDatabaseW(V_BSTR(&varg0), V_BSTR(&varg1), &hdb);
++    ret = MsiOpenDatabaseW(V_BSTR(&varg0), persist, &hdb);
+     if (ret != ERROR_SUCCESS)
+     {
+         hr = DISP_E_EXCEPTION;
