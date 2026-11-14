@@ -1,0 +1,3 @@
+# /etc/udev/rules.d/90-knx-dongle.rules
+# KNX License Stick (auch virtuell via uhid): fuer Wine/ETS les- und schreibbar
+KERNEL=="hidraw*", SUBSYSTEMS=="hid", KERNELS=="*:2A07:0102.*", MODE="0666"

@@ -1,0 +1,21 @@
+# Lima-Vorlage für die ETS-VM (Fedora 45 aarch64, Apple Virtualization.framework, 4K-Seiten)
+# Anlegen:  limactl create --name=wine-arm64 vm/wine-arm64.yaml && limactl start wine-arm64
+# Vorher:   mkdir -p ~/ETS-Daten   und das ETS6-Programmverzeichnis nach ~/ETS6 kopieren
+minimumLimaVersion: 2.0.0
+vmType: vz
+arch: aarch64
+cpus: 8
+memory: 12GiB
+disk: 40GiB
+images:
+- location: "https://download.fedoraproject.org/pub/fedora/linux/releases/45/Cloud/aarch64/images/Fedora-Cloud-Base-Generic-45-1.4.aarch64.qcow2"
+  arch: aarch64
+  digest: "sha256:1632acc8bc14d45b6c9596a0acc71b070d3748d1abdcf1a519be5c983bb0286c"
+mounts:
+- location: "~/ETS6"          # ETS-Programmverzeichnis (von Windows kopiert), nur lesend
+  mountPoint: /mnt/ets6
+  writable: false
+- location: "~/ETS-Daten"     # Mac-Dateien für ETS -> Laufwerk H:
+  mountPoint: /mnt/ets-daten
+  writable: true
+# Gast-Port 7531 (uhid-bridge) leitet Lima automatisch auf 127.0.0.1:7531 des Macs weiter.

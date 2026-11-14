@@ -1,0 +1,30 @@
+REGEDIT4
+
+; Wine-/ETS-Einstellungen für den Prefix ~/.wine-ets
+; Import: WINEPREFIX=~/.wine-ets wine regedit wine/ets-settings.reg
+
+[HKEY_CURRENT_USER\Software\Wine]
+"Version"="win11"
+
+[HKEY_CURRENT_USER\Software\Wine\DllOverrides]
+"mscoree"="native"
+
+; WPF: Software-Rendering (keine GPU in der VM)
+[HKEY_CURRENT_USER\Software\Microsoft\Avalon.Graphics]
+"DisableHWAcceleration"=dword:00000001
+
+; Absturz nicht in winedbg --auto hängen lassen
+[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\AeDebug]
+"Auto"="0"
+"Debugger"=-
+
+; .NET: TLS vom System (inkl. TLS 1.3, Patch 0005) und starke Kryptografie
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework\v4.0.30319]
+"SystemDefaultTlsVersions"=dword:00000000
+"SchUseStrongCrypto"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\.NETFramework\v4.0.30319]
+"SystemDefaultTlsVersions"=dword:00000000
+"SchUseStrongCrypto"=dword:00000001
+
+; Fusion-Log nur bei Fehlersuche einschalten (EnableLog/ForceLog=1, LogPath=C:\\fusionlog\\)

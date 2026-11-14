@@ -32,6 +32,9 @@ Alle Schritte mit exakten Befehlen, Fehlerbildern und Ursachen: **[INSTALL-LOG.m
 
 ## Verzeichnisse
 
+- `vm/` – Lima-Vorlage (`wine-arm64.yaml`), Systemdateien der VM und `install-system.sh`
+- `wine/ets-settings.reg` – Registry-Einstellungen für den Wine-Prefix
+- `CLAUDE.md` – Projektkontext und Arbeitsregeln für Claude Code
 - `ets-arm64/patches/` – Wine-Patches
 - `ets-arm64/scripts/` – Build-/Installationsskripte, Launcher, Host, libdl-Brücke, Startskript
 - `ets-arm64/hidbridge/` – Dongle-Brücke (Mac + VM)

@@ -1,0 +1,11 @@
+# /etc/systemd/system/uhid-bridge.service  (Skript: hidbridge/uhid-bridge.py -> /opt/ets-arm64/)
+[Unit]
+Description=KNX HID-Bruecke (uhid) fuer ETS/Wine
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/ets-arm64/uhid-bridge.py 7531
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
