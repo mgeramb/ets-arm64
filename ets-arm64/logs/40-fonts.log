@@ -1,0 +1,54 @@
+abattis-cantarell-vf-fonts
+adwaita-mono-fonts
+adwaita-sans-fonts
+google-droid-sans-fonts
+google-noto-vf
+open-sans
+urw-base35
+[9/9] Installing liberation-sans-fonts- 100% |  13.1 MiB/s |   1.6 MiB |  00m00s
+geschrieben: /home/mgeramb.guest/.wine-ets/drive_c/windows/Fonts/segmdl2.ttf
+Schriften installiert: 37 Dateien in /home/mgeramb.guest/.wine-ets/drive_c/windows/Fonts
+Mutex Global\KNXETS6_54E11E05-D8E6-45F2-9B09-DE462C4DBA3F created=True
+ETS6N.exe gestartet, PID 228
+00e8:err:eventlog:ReportEventW L"Description: The application requested process termination through System.Environment.FailFast(string message).\n"
+00e8:err:eventlog:ReportEventW L"Message: Unrecoverable system error.\n"
+00e8:err:eventlog:ReportEventW L"   at System.Environment.FailFast(System.String)\n"
+00e8:err:eventlog:ReportEventW L"   at MS.Internal.Shaping.TypefaceMap.MapUnresolvedCharacters(System.Windows.Media.TextFormatting.CharacterBufferRange, System.Globalization.CultureInfo, System.Globalization.CultureInfo, MS.Internal.FontFace.PhysicalFontFamily, Int32 ByRef, MS.Internal.SpanVector, Int32, Int32 ByRef)\n"
+00e8:err:eventlog:ReportEventW L"   at MS.Internal.Shaping.TypefaceMap.MapByFontFamilyList(System.Windows.Media.TextFormatting.CharacterBufferRange, System.Globalization.CultureInfo, System.Globalization.CultureInfo, System.Windows.Media.FontFamily[], MS.Internal.FontFace.PhysicalFontFamily ByRef, Int32 ByRef, MS.Interna"...
+00e8:err:eventlog:ReportEventW L"   at MS.Internal.Shaping.TypefaceMap.MapItem(System.Windows.Media.TextFormatting.CharacterBufferRange, System.Globalization.CultureInfo, MS.Internal.Span, MS.Internal.Generic.SpanVector`1<Int32> ByRef, Int32)\n"
+00e8:err:eventlog:ReportEventW L"   at MS.Internal.Shaping.TypefaceMap.GetShapeableText(System.Windows.Media.TextFormatting.CharacterBufferReference, Int32, System.Windows.Media.TextFormatting.TextRunProperties, System.Globalization.CultureInfo, Boolean, System.Collections.Generic.IList`1<MS.Internal.TextFormatting.TextS"...
+00e8:err:eventlog:ReportEventW L"   at MS.Internal.Shaping.GlyphingCache.GetShapeableText(System.Windows.Media.Typeface, System.Windows.Media.TextFormatting.CharacterBufferReference, Int32, System.Windows.Media.TextFormatting.TextRunProperties, System.Globalization.CultureInfo, Boolean, System.Collections.Generic.IList`1"...
+00e8:err:eventlog:ReportEventW L"   at System.Windows.Media.TextFormatting.TextCharacters.MS.Internal.TextFormatting.ITextSymbols.GetTextShapeableSymbols(MS.Internal.Shaping.GlyphingCache, System.Windows.Media.TextFormatting.CharacterBufferReference, Int32, Boolean, Boolean, System.Globalization.CultureInfo, System.Windo"...
+00e8:err:eventlog:ReportEventW L"   at MS.Internal.TextFormatting.TextStore.CreateTextLSRuns(MS.Internal.TextFormatting.TextRunInfo, System.Collections.Generic.IList`1<System.Windows.Media.TextEffect>, System.Globalization.CultureInfo, Int32, Int32, Int32, System.Windows.Media.TextFormattingMode, Boolean, Int32 ByRef)\n"
+shot ok
+coue1255.fon
+coue1256.fon
+coue1257.fon
+couree.fon
+coure.fon
+coureg.fon
+courer.fon
+couret.fon
+cvgasys.fon
+hvgasys.fon
+jsmalle.fon
+jvgafix.fon
+jvgasys.fon
+marlett.ttf
+smae1255.fon
+smae1256.fon
+smae1257.fon
+smallee.fon
+smalle.fon
+smalleg.fon
+geschrieben: /home/mgeramb.guest/.wine-ets/drive_c/windows/Fonts/segmdl2.ttf
+Schriften installiert: 45 Dateien in /home/mgeramb.guest/.wine-ets/drive_c/windows/Fonts
+System fonts: 44 -> Adwaita Mono, Adwaita Sans, C059, Cantarell, D050000L, DejaVu Math TeX Gyre, DejaVu Sans, DejaVu Sans Mono, DejaVu Serif, Droid Arabic Kufi, Droid Sans, Droid Sans Armenian, Droid Sans Devanagari, Droid Sans Ethiopic, Droid Sans Fallback, Droid Sans Georgian, Droid Sans Hebrew, D
+Segoe UI GlyphTypeface: file:///C:/windows/fonts/segoeui.ttf
+ok 83.5333333333333,12.65
+[Arial] 0054 0065 0073 0074 -> ok 20.1733333333333,13.2
+[Segoe MDL2 Assets] E106 E921 -> ok 19.3333333333333,11
+[Segoe UI] E106 -> ok 8.25,12.65
+[Segoe UI] 2026 2192 25B6 -> ok 30.25,12.65
+[Segoe UI] 4E2D 6587 -> ok 16.5,12.65
+fertig

@@ -1,0 +1,18 @@
+From: ETS-ARM64 project
+Subject: [PATCH] secur32: Report TLS 1.3 in the negotiated connection protocol.
+
+get_protocol() returned 0 for GNUTLS_TLS1_3, so SECPKG_ATTR_CONNECTION_INFO reported no protocol.
+.NET Framework SslStream rejects that ("The specified value is not valid in the SslProtocolType
+enumeration"), breaking every HTTPS request with SystemDefault TLS to TLS 1.3 servers.
+---
+diff -ru a/dlls/secur32/schannel_gnutls.c b/dlls/secur32/schannel_gnutls.c
+--- a/dlls/secur32/schannel_gnutls.c	2026-11-14 12:09:25.317345533 +0100
++++ b/dlls/secur32/schannel_gnutls.c	2026-11-14 12:09:25.320009749 +0100
+@@ -713,6 +713,7 @@
+     case GNUTLS_TLS1_0: return SP_PROT_TLS1_0_CLIENT;
+     case GNUTLS_TLS1_1: return SP_PROT_TLS1_1_CLIENT;
+     case GNUTLS_TLS1_2: return SP_PROT_TLS1_2_CLIENT;
++    case GNUTLS_TLS1_3: return SP_PROT_TLS1_3_CLIENT;
+     case GNUTLS_DTLS1_0: return SP_PROT_DTLS1_0_CLIENT;
+     case GNUTLS_DTLS1_2: return SP_PROT_DTLS1_2_CLIENT;
+     default:

@@ -1,0 +1,16 @@
+.DS_Store
+
+# gebaute Binärdateien
+ets-arm64/hidbridge/knx-hidbridge
+*.exe
+*.dll
+*.so
+*.o
+*.app/
+
+# KNX-/Microsoft-Dateien werden nie mitgeliefert (Lizenz) – nur bei der Installation lokal erzeugt
+DevKit.so
+*.icns
+*.ico
+*.cab
+NDP481-*.exe

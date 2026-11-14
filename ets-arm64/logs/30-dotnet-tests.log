@@ -1,0 +1,221 @@
+=== run hello.exe
+wine: failed to load /opt/wine-arm64/lib/wine/aarch64-windows/ntdll.dll error c00000bb
+rc=1
+=== run wpf.exe
+wine: failed to load /opt/wine-arm64/lib/wine/aarch64-windows/ntdll.dll error c00000bb
+rc=1
+=== run hello.exe (anycpu)
+wine: failed to load /opt/wine-arm64/lib/wine/aarch64-windows/ntdll.dll error c00000bb
+rc=1
+=== run hello.exe
+MESA-EGL: warning: DRI3 error: Could not get DRI3 device
+MESA-EGL: warning: DRI3 error: Could not get DRI3 device
+MESA-EGL: warning: Ensure your X server supports DRI3 to get accelerated rendering
+MESA-EGL: warning: Ensure your X server supports DRI3 to get accelerated rendering
+0144:err:eventlog:ReportEventW L"Error parsing shim database version - system32.00000"
+0144:err:eventlog:ReportEventW L"Error parsing shim database version - system32.00000"
+wine: failed to start L"\\??\\C:\\windows\\system32\\fondue.exe": c0000135
+rc=124
+mscoree.dll gebaut: 125 Exporte -> /home/mgeramb.guest/.wine-ets/drive_c/windows/system32/mscoree.dll
+0024:err:eventlog:ReportEventW L"Application: hello.exe\n"
+0024:err:eventlog:ReportEventW L"Framework Version: v4.0.30319\n"
+0024:err:eventlog:ReportEventW L"Description: The process was terminated due to an internal error in the .NET Runtime at IP 00006FFFFBE9D27C (00006FFFFBDA0000) with exit code 80131506.\n"
+0024:err:seh:NtRaiseException Unhandled exception code c0000005 flags 0 addr 0x6ffffbe9d27c
+rc=5
+mscoree.dll gebaut: 126 Exporte -> /home/mgeramb.guest/.wine-ets/drive_c/windows/system32/mscoree.dll
+  Ordinal: 24
+  Name: 
+  ForwardedTo: mscoreei.#24
+}
+--
+  Ordinal: 108
+  Name: ND_RI8
+  ForwardedTo: mscoreei.ND_RI8
+}
+--
+  Ordinal: 118
+  Name: RuntimeReleaseHandle
+0024:err:seh:NtRaiseException Unhandled exception code c0000409 flags 1 addr 0x6ffffd184fdc
+rc=9
+mscoree.dll gebaut: 126 Exporte -> /home/mgeramb.guest/.wine-ets/drive_c/windows/system32/mscoree.dll
+0024:err:seh:NtRaiseException Unhandled exception code c0000409 flags 1 addr 0x6ffffd184fdc
+rc=9
+mscoree.dll gebaut: 126 Exporte -> /home/mgeramb.guest/.wine-ets/drive_c/windows/system32/mscoree.dll
+0024:err:seh:NtRaiseException Unhandled exception code c0000409 flags 1 addr 0x6ffffd184fdc
+rc=9
+ORD=0 DLLMAIN=0 -> 0024:err:eventlog:ReportEventW L"Description: The process was terminated due to an internal error in the .NET Runtime at IP 00006FFFFBE9D27C (00006FFF
+0024:err:seh:NtRaiseException Unhandled exception code c0000005 flags 0 addr 0x6ffffbe9d27c
+ORD=0 DLLMAIN=1 -> 0024:err:eventlog:ReportEventW L"Description: The process was terminated due to an internal error in the .NET Runtime at IP 00006FFFFBC9D27C (00006FFF
+0024:err:seh:NtRaiseException Unhandled exception code c0000005 flags 0 addr 0x6ffffbc9d27c
+ORD=1 DLLMAIN=0 -> 0024:err:seh:NtRaiseException Unhandled exception code c0000409 flags 1 addr 0x6ffffd0b4fdc
+ORD=1 DLLMAIN=1 -> 0024:err:seh:NtRaiseException Unhandled exception code c0000409 flags 1 addr 0x6ffffd184fdc
+mscoree.dll gebaut: 126 Exporte -> /home/mgeramb.guest/.wine-ets/drive_c/windows/system32/mscoree.dll
+rc=0
+0024:trace:loaddll:LdrGetProcedureAddress GPA (null) ord 24 in L"C:\\windows\\system32\\mscoree.dll" caller 00006FFFFFAC9860 -> 00006FFFFD0A1B30
+stub: 4 00000000007B58E8 0000000000148CE8 0000000000149AB8 0000000000000000
+Hallo aus .NET 4.0.30319.42000 | .NET Framework 4.8.9195.0
+ProcessArchitecture: Arm64, 64bit=True
+Runtime dir: C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\
+Dictionary ok: 100000
+=== run wpf.exe
+MESA-EGL: warning: DRI3 error: Could not get DRI3 device
+MESA-EGL: warning: Ensure your X server supports DRI3 to get accelerated rendering
+00e0:err:ole:CoGetContextToken apartment not initialised
+0024:err:seh:NtRaiseException Unhandled exception code c0000409 flags 1 addr 0x6ffffbb1fbf8
+rc=9
+1 gefangen: einfach
+2 gefangen: tief
+3 NullReference gefangen (HW-Exception)
+4 DivideByZero gefangen
+5 TypeLoad gefangen
+EH ok
+rc=0
+== win7
+0024:fixme:ntdll:EtwEventSetInformation (deadbeef, 2, 00006FFFFD0E7B69, 28) stub
+0024:fixme:ver:GetCurrentPackageId (000000000014EAE0 0000000000000000): stub
+0024:fixme:ntdll:EtwEventSetInformation (deadbeef, 2, 00006FFFFC6F27FD, 28) stub
+0024:fixme:ver:GetCurrentPackageId (000000000014F040 0000000000000000): stub
+0024:fixme:seh:WerRegisterRuntimeExceptionModule (L"C:\\windows\\Microsoft.NET\\FrameworkArm64\\v4.0.30319\\mscordacwks.dll", 00006FFFFBDA0000) stub
+0024:fixme:ntdll:NtQuerySystemInformation info_class SYSTEM_PERFORMANCE_INFORMATION
+00e0:err:ole:CoGetContextToken apartment not initialised
+0024:fixme:ntdll:EtwEventSetInformation (deadbeef, 2, 00006FFFFA33DEFD, 28) stub
+== win10
+0024:fixme:ntdll:EtwEventSetInformation (deadbeef, 2, 00006FFFFD0E7B69, 28) stub
+0024:fixme:ver:GetCurrentPackageId (000000000014EAE0 0000000000000000): stub
+0024:fixme:ntdll:EtwEventSetInformation (deadbeef, 2, 00006FFFFC6F27FD, 28) stub
+0024:fixme:ver:GetCurrentPackageId (000000000014F040 0000000000000000): stub
+0024:fixme:seh:WerRegisterRuntimeExceptionModule (L"C:\\windows\\Microsoft.NET\\FrameworkArm64\\v4.0.30319\\mscordacwks.dll", 00006FFFFBDA0000) stub
+0024:fixme:ntdll:NtQuerySystemInformation info_class SYSTEM_PERFORMANCE_INFORMATION
+00e0:err:ole:CoGetContextToken apartment not initialised
+0024:fixme:ntdll:EtwEventSetInformation (deadbeef, 2, 00006FFFFA33DEFD, 28) stub
+== win7
+0024:fixme:seh:WerRegisterRuntimeExceptionModule (L"C:\\windows\\Microsoft.NET\\FrameworkArm64\\v4.0.30319\\mscordacwks.dll", 00006FFFFBDA0000) stub
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 4 00000000007B8E98 0000000000148CE8 0000000000149AB8 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 3 00000000007BAC50 0000000000149A48 000000000014A818 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 3 00000000007BAC50 0000000000149A48 000000000014A818 0000000000000000
+0024:err:seh:NtRaiseException Unhandled exception code c0000409 flags 1 addr 0x6ffffbc5fbf8
+== win10
+0024:fixme:seh:WerRegisterRuntimeExceptionModule (L"C:\\windows\\Microsoft.NET\\FrameworkArm64\\v4.0.30319\\mscordacwks.dll", 00006FFFFBDA0000) stub
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 4 00000000007B5948 0000000000148CE8 0000000000149AB8 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 3 00000000007CE2D0 0000000000149A48 000000000014A818 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 3 00000000007CE2D0 0000000000149A48 000000000014A818 0000000000000000
+0024:err:seh:NtRaiseException Unhandled exception code c0000409 flags 1 addr 0x6ffffbc5fbf8
+== win11
+0024:fixme:seh:WerRegisterRuntimeExceptionModule (L"C:\\windows\\Microsoft.NET\\FrameworkArm64\\v4.0.30319\\mscordacwks.dll", 00006FFFFBDA0000) stub
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 4 00000000007B5948 0000000000148CE8 0000000000149AB8 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 3 00000000007CE2D0 0000000000149A48 000000000014A818 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 3 00000000007CE2D0 0000000000149A48 000000000014A818 0000000000000000
+0024:err:seh:NtRaiseException Unhandled exception code c0000409 flags 1 addr 0x6ffffbc5fbf8
+== sta
+0100:err:ole:CoGetContextToken apartment not initialised
+STA ok, apt=STA
+== mtawpf
+0150:err:eventlog:ReportEventW L"Application: mtawpf.exe\n"
+0150:err:eventlog:ReportEventW L"Framework Version: v4.0.30319\n"
+0150:err:eventlog:ReportEventW L"Description: The process was terminated due to an unhandled exception.\n"
+0150:err:eventlog:ReportEventW L"Exception Info: System.IO.FileNotFoundException\n"
+0150:err:eventlog:ReportEventW L"   at P.Main()\n"
+0150:err:eventlog:ReportEventW L"\n"
+
+System.IO.FileNotFoundException: Could not load file or assembly 'PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35' or one of its dependencies. File not found.
+== mtawpf
+0024:err:eventlog:ReportEventW L"Application: mtawpf.exe\n"
+0024:err:eventlog:ReportEventW L"Framework Version: v4.0.30319\n"
+0024:err:eventlog:ReportEventW L"Description: The process was terminated due to an unhandled exception.\n"
+0024:err:eventlog:ReportEventW L"Exception Info: System.IO.FileNotFoundException\n"
+0024:err:eventlog:ReportEventW L"   at P.Main()\n"
+0024:err:eventlog:ReportEventW L"\n"
+
+System.IO.FileNotFoundException: Could not load file or assembly 'PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35' or one of its dependencies. File not found.
+== wpf2
+rc=9
+013c:err:ole:CoGetContextToken apartment not initialised
+0134:err:seh:NtRaiseException Unhandled exception code c0000409 flags 1 addr 0x6ffffbb1fbf8
+rc=0
+00e0:err:ole:CoGetContextToken apartment not initialised
+STEP 1 load PresentationCore
+STEP 2 Dispatcher
+STEP 3 RenderCapability tier=2
+STEP 4 new Application
+STEP 5 new Window
+STEP 6 content
+STEP 7 app.Run
+0024:err:combase:RoGetActivationFactory Failed to find library for L"Windows.Foundation.Diagnostics.AsyncCausalityTracer"
+STEP 8 loaded
+STEP 9 exit ok
+== hello
+MESA-EGL: warning: DRI3 error: Could not get DRI3 device
+MESA-EGL: warning: Ensure your X server supports DRI3 to get accelerated rendering
+MESA-EGL: warning: DRI3 error: Could not get DRI3 device
+MESA-EGL: warning: Ensure your X server supports DRI3 to get accelerated rendering
+wineboot rc=0
+Hallo aus .NET 4.0.30319.42000 | .NET Framework 4.8.9195.0
+ProcessArchitecture: Arm64, 64bit=True
+Runtime dir: C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\
+Dictionary ok: 100000
+== exc
+/home/mgeramb.guest/.wine-ets/drive_c/windows/system32/mscoree.dll: PE32+ executable for MS Windows 6.00 (DLL)
+== hello
+Hallo aus .NET 4.0.30319.42000 | .NET Framework 4.8.9195.0
+ProcessArchitecture: Arm64, 64bit=True
+Runtime dir: C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\
+Dictionary ok: 100000
+== exc
+3 NullReference gefangen (HW-Exception)
+4 DivideByZero gefangen
+5 TypeLoad gefangen
+EH ok
+== wpf2
+STEP 6 content
+STEP 7 app.Run
+STEP 8 loaded
+STEP 9 exit ok
+3 NullReference gefangen (HW-Exception)
+4 DivideByZero gefangen
+5 TypeLoad gefangen
+EH ok
+== wpf2
+STEP 6 content
+STEP 7 app.Run
+STEP 8 loaded
+STEP 9 exit ok
+0024:fixme:ntdll:EtwEventSetInformation (deadbeef, 2, 00006FFFFD1B7B69, 28) stub
+0024:fixme:ver:GetCurrentPackageId (000000000014EAE0 0000000000000000): stub
+0024:fixme:ntdll:EtwEventSetInformation (deadbeef, 2, 00006FFFFC5B27FD, 28) stub
+0024:fixme:ver:GetCurrentPackageId (000000000014F040 0000000000000000): stub
+0024:fixme:seh:WerRegisterRuntimeExceptionModule (L"C:\\windows\\Microsoft.NET\\FrameworkArm64\\v4.0.30319\\mscordacwks.dll", 00006FFFFBC60000) stub
+0024:fixme:ntdll:NtQuerySystemInformation info_class SYSTEM_PERFORMANCE_INFORMATION
+00e0:err:ole:CoGetContextToken apartment not initialised
+0024:fixme:ntdll:EtwEventSetInformation (deadbeef, 2, 00006FFFFA2DDEFD, 28) stub
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 4 00000000007B5958 0000000000148CE8 0000000000149AB8 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 3 00000000007DED50 0000000000149A48 000000000014A818 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 3 00000000007DED50 0000000000149A48 000000000014A818 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 2 0000000000822C38 0000000000146B58 0000000000147928 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 2 0000000000822C38 00000000001478B8 0000000000148688 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 2 0000000000822C38 00000000001478B8 0000000000148688 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 2 000000000084D668 0000000000143E58 0000000000144C28 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 2 000000000084DD98 0000000000149B88 000000000014A958 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 2 000000000084DD98 0000000000149B88 000000000014A958 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 2 00000000008592F0 0000000000146F08 0000000000147CD8 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 2 00000000008592F0 0000000000147C68 0000000000148A38 0000000000000000
+0024:fixme:combase:RoGetParameterizedTypeInstanceIID stub: 2 00000000008592F0 0000000000147C68 0000000000148A38 0000000000000000
+L"C:\\windows\\system32\\dwrite.dll" at 00006FFFF9760000: builtin
+L"C:\\windows\\Microsoft.NET\\FrameworkArm64\\v4.0.30319\\WPF\\wpfgfx_v0400.dll" at 00006FFFF9580000: native
+L"C:\\windows\\Microsoft.NET\\FrameworkArm64\\v4.0.30319\\WPF\\PresentationNative_v0400.dll" at 00006FFFF9320000: native
+Ausnahme 0 gefangen nach 0 ms
+Ausnahme 1 gefangen nach 6 ms
+Ausnahme 2 gefangen nach 6 ms
+Ausnahme 3 gefangen nach 6 ms
+Ausnahme 4 gefangen nach 6 ms
+rc=0
+1 Assembly.Load: FileNotFoundException nach 13 ms
+rc=5
+ok
+patching file dlls/ntdll/unwind.c
+built
+1 Assembly.Load: FileNotFoundException nach 12 ms
+2 GetType mit Assembly: FileNotFoundException nach 24 ms
+3 TypeLoad in mscorlib: TypeLoadException nach 25 ms
+ende ok
+TypeLoad/FileNotFound gefangen: FileNotFoundException
+ende ok

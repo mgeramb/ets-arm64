@@ -1,0 +1,40 @@
+From: ETS-ARM64 project
+Subject: [PATCH] ntdll, server: Run AnyCPU IL-only executables natively on ARM64.
+
+On ARM64, .NET Framework 4.8.1 runs AnyCPU (ComPlusNativeReady) images as native ARM64
+processes. Wine always mapped them to AMD64 on 64-bit hosts, requiring x64 emulation.
+---
+diff -ru a/dlls/ntdll/unix/loader.c b/dlls/ntdll/unix/loader.c
+--- a/dlls/ntdll/unix/loader.c	2026-11-13 18:51:48.843593052 +0100
++++ b/dlls/ntdll/unix/loader.c	2026-11-13 18:51:48.848593077 +0100
+@@ -481,7 +481,7 @@
+     char preloader_reserve[64], socket_env[64];
+ 
+     if (pe_info->image_flags & IMAGE_FLAGS_ComPlusNativeReady)
+-        machine = is_machine_64bit( native_machine ) ? IMAGE_FILE_MACHINE_AMD64 : native_machine;
++        machine = native_machine;
+ 
+     signal( SIGPIPE, SIG_DFL );
+ 
+@@ -1421,7 +1421,7 @@
+         status = virtual_map_main_module( mapping, load_machine );
+         if (status == STATUS_IMAGE_MACHINE_TYPE_MISMATCH && main_image_info.ComPlusNativeReady)
+         {
+-            main_image_info.Machine = is_machine_64bit( native_machine ) ? IMAGE_FILE_MACHINE_AMD64 : native_machine;
++            main_image_info.Machine = native_machine;
+             status = STATUS_SUCCESS;
+         }
+         NtClose( mapping );
+diff -ru a/server/mapping.c b/server/mapping.c
+--- a/server/mapping.c	2026-11-13 18:51:48.846593067 +0100
++++ b/server/mapping.c	2026-11-13 18:51:48.859915052 +0100
+@@ -1679,8 +1679,7 @@
+         {
+             current->entry_point = view->base + req->entry;
+             if (view->image.image_flags & IMAGE_FLAGS_ComPlusNativeReady)
+-                current->process->machine = is_machine_64bit( native_machine )
+-                    ? IMAGE_FILE_MACHINE_AMD64 : native_machine;
++                current->process->machine = native_machine;
+             else
+                 current->process->machine = req->machine;
+         }

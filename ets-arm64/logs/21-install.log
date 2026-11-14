@@ -1,0 +1,13 @@
+Nothing to do.
+NDP481-x86-x64-AllOS-ENU.exe: OK
+Manifeste: 1666, Dateien: 3100
+stats: {'manifests': 1389, 'files': 1029, 'links': 754, 'missing': 0, 'keys': 3778, 'values': 5712, 'parse_errors': 0}
+unbekannte Variablen: ['assembly.empty']
+stderr lines: 0
+Assembly
+Framework
+Framework64
+FrameworkArm64
+383
+0
+ls: cannot access '/home/mgeramb.guest/.wine-ets/drive_c/windows/Microsoft.NET/assembly/GAC_MSIL': No such file or directory

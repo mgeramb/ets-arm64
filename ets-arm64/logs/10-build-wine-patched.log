@@ -1,0 +1,7 @@
+== [1/4] Build-Abhängigkeiten
+== [2/4] Quelltext wine-11.21
+== [2b] Patches aus /mnt/share/patches
+  angewendet: 0001-anycpu-il-native-arm64.patch
+== [3/4] configure + make
+== [4/4] Installation nach /opt/wine-arm64
+wine-11.21

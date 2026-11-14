@@ -1,0 +1,23 @@
+248
+mscoree.dll gebaut: 125 Weiterleitungen -> /tmp/mscoree.dll
+/tmp/mscoree.dll: PE32+ executable for MS Windows 6.00 (DLL), ARM64, 2 sections
+regedit rc=0
+    InstallRootArm64    REG_SZ    C:\windows\Microsoft.NET\FrameworkArm64\
+    Release    REG_DWORD    0x82348
+=== csc.exe test
+0024:fixme:heap:RtlSetHeapInformation HEAP_INFORMATION_CLASS 1 not implemented!
+Microsoft (R) Visual C# Compiler version 4.8.9037.0
+for C# 5
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+This compiler is provided as part of the Microsoft (R) .NET Framework, but only supports language versions up to C# 5, which is no longer the latest version. For compilers that support newer versions of the C# programming language, see http://go.microsoft.com/fwlink/?LinkID=533240
+
+                        Visual C# Compiler Options
+
+                        - OUTPUT FILES -
+/out:<file>                    Specify output file name (default: base name of file with main class or first file)
+/target:exe                    Build a console executable (default) (Short form: /t:exe)
+/target:winexe                 Build a Windows executable (Short form: /t:winexe)
+/target:library                Build a library (Short form: /t:library)
+/target:module                 Build a module that can be added to another assembly (Short form: /t:module)
+rc=0

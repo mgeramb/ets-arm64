@@ -1,0 +1,79 @@
+From: ETS-ARM64 project
+Subject: [PATCH] ntdll: Support indirect ARM64 .pdata entries (Flag == 3).
+
+On ARM64 a RUNTIME_FUNCTION with Flag == 3 contains the RVA of another .pdata entry (the primary
+function) whose unwind and exception data is shared, e.g. for separated function fragments.
+Such an entry has no length of its own and extends to the next .pdata entry. MSVC uses this
+extensively (20220 of 96628 entries in .NET 4.8.1 clr.dll). Wine treated it as packed unwind
+data, computed bogus frames and restored registers from wrong stack slots.
+Resolve the indirection in RtlLookupFunctionEntry and RtlVirtualUnwind2; code outside the
+primary function range is treated as function body.
+---
+diff -ru a/dlls/ntdll/unwind.c b/dlls/ntdll/unwind.c
+--- a/dlls/ntdll/unwind.c	2026-11-13 23:09:36.727785235 +0100
++++ b/dlls/ntdll/unwind.c	2026-11-13 23:09:36.748542263 +0100
+@@ -642,7 +642,7 @@
+     prologue_end = &prologue[ppos];
+     epilogue_end = &epilogue[epos];
+ 
+-    if (func->Flag == 1)
++    if (func->Flag == 1 && offset < func->FunctionLength)
+     {
+         if (offset < (prologue_end - prologue) || offset >= func->FunctionLength - (epilogue_end - epilogue))
+         {
+@@ -753,6 +753,24 @@
+     return NULL;
+ }
+ 
++/* .pdata entries with Flag == 3 do not contain unwind data but the RVA of another
++ * .pdata entry whose unwind data is shared (used e.g. for folded or split functions). */
++static ARM64_RUNTIME_FUNCTION *resolve_indirect_function_arm64( ULONG_PTR base, ARM64_RUNTIME_FUNCTION *func )
++{
++    unsigned int depth = 0;
++
++    while (func && func->Flag == 3 && depth++ < 8)
++        func = (ARM64_RUNTIME_FUNCTION *)(base + (func->UnwindData & ~3));
++    return func;
++}
++
++static ULONG get_function_length_arm64( ULONG_PTR base, ARM64_RUNTIME_FUNCTION *func )
++{
++    func = resolve_indirect_function_arm64( base, func );
++    if (func->Flag) return func->FunctionLength;
++    return ((IMAGE_ARM64_RUNTIME_FUNCTION_ENTRY_XDATA *)(base + func->UnwindData))->FunctionLength;
++}
++
+ static ARM64_RUNTIME_FUNCTION *find_function_info_arm64( ULONG_PTR pc, ULONG_PTR base,
+                                                          ARM64_RUNTIME_FUNCTION *func, ULONG count )
+ {
+@@ -766,9 +784,12 @@
+ 
+         if (pc >= start)
+         {
+-            ULONG len = func[pos].Flag ? func[pos].FunctionLength :
+-                ((IMAGE_ARM64_RUNTIME_FUNCTION_ENTRY_XDATA *)(base + func[pos].UnwindData))->FunctionLength;
+-            if (pc < start + 4 * len) return func + pos;
++            ULONG_PTR end;
++
++            /* indirect entries have no length of their own, they end at the next entry */
++            if (func[pos].Flag == 3 && pos + 1 < count) end = base + func[pos + 1].BeginAddress;
++            else end = start + 4 * get_function_length_arm64( base, func + pos );
++            if (pc < end) return resolve_indirect_function_arm64( base, func + pos );
+             min = pos + 1;
+         }
+         else max = pos - 1;
+@@ -813,6 +834,14 @@
+         return STATUS_SUCCESS;
+     }
+ 
++    if (func->Flag == 3)
++    {
++        /* use the shared unwind data, but keep the start address of this function */
++        ARM64_RUNTIME_FUNCTION *target = resolve_indirect_function_arm64( base, func );
++        TRACE( "indirect entry %lx -> %lx\n", func->BeginAddress, target->BeginAddress );
++        func = target;
++    }
++
+     __TRY
+     {
+         if (func->Flag)

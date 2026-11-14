@@ -1,0 +1,29 @@
+stats: {'manifests': 1389, 'files': 1029, 'links': 754, 'missing': 0, 'keys': 3778, 'values': 5712, 'parse_errors': 0, 'gac': 12}
+unbekannte Variablen: ['assembly.empty']
+C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\CustomMarshalers.dll
+C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\ISymWrapper.dll
+C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\Microsoft.VisualBasic.Activities.Compiler.dll
+C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\Microsoft.Transactions.Bridge.Dtc.dll
+C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\mscorlib.dll
+C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\WPF\PresentationCore.dll
+C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\System.Data.OracleClient.dll
+C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\System.Data.dll
+C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\System.EnterpriseServices.dll
+C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\WPF\System.Printing.dll
+C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\System.Transactions.dll
+C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\System.Web.dll
+OK   0x00000000  C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\CustomMarshalers.dll
+OK   0x00000000  C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\ISymWrapper.dll
+OK   0x00000000  C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\Microsoft.VisualBasic.Activities.Compiler.dll
+OK   0x00000000  C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\Microsoft.Transactions.Bridge.Dtc.dll
+OK   0x00000000  C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\mscorlib.dll
+OK   0x00000000  C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\WPF\PresentationCore.dll
+OK   0x00000000  C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\System.Data.OracleClient.dll
+OK   0x00000000  C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\System.Data.dll
+OK   0x00000000  C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\System.EnterpriseServices.dll
+OK   0x00000000  C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\WPF\System.Printing.dll
+OK   0x00000000  C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\System.Transactions.dll
+OK   0x00000000  C:\windows\Microsoft.NET\FrameworkArm64\v4.0.30319\System.Web.dll
+rc=0
+GAC_64
+GAC_MSIL
