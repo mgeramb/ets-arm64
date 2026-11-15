@@ -53,5 +53,6 @@ Analysewerkzeuge (`ets-arm64/tools/`): `pinv.cs` (P/Invokes), `typeinfo.cs`, `il
 ## Offen
 - Gesamt-Installationsskript (Lima-VM → Wine-Build → .NET → mscoree/libdl/Host → Schriften → Registry
   `wine/ets-settings.reg` → `vm/install-system.sh` → App). Bausteine liegen in `scripts/` und `vm/`.
-- EIBA-sc-Dateien für Plugin-Geräte-Import (aus Ets6Setup.exe/Windows, INSTALL-LOG §24c).
+- Import eines Plugin-Geräts in ETS testen (EIBA sc installiert, §25). 32-Bit-Kompatibilitätsmodus
+  (ETS6C.exe, x86) nativ unmöglich – nur per WoW64-Emulator (FEX) denkbar.
 - Cloud-Lizenz (nicht nativ möglich), Neustart aus ETS heraus, Patch 0003 noch nötig?, Wine-Upstream-MRs.

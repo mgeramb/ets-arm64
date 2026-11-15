@@ -433,7 +433,7 @@ Test `tests/msiopen.cs` (legt per C-API eine MSI an, öffnet sie per Automation 
 - Host setzt den WPF-Schalter zusätzlich per `AppContext.SetSwitch` in der ETS-AppDomain.
 ✅ ETS startet, Dongle-Lizenz „User is licensed“, keine neuen Fehler im ETS-Log.
 
-### 24c. EIBA-sc-Kompatibilitätsschicht ⚠️ offen
+### 24c. EIBA-sc-Kompatibilitätsschicht → gelöst in §25
 Plugin-Geräte-Import („Value cannot be null“ / `0x80070716`, WineHQ-Bug 60377) braucht `EIBA.*.dll` in
 `C:\Program Files (x86)\Common Files\EIBA sc` (+ `EIBA.Interop.*.dll`, `EIBA.DownloadImageHelper.dll`
 im ETS-Ordner). Bei uns leer, weil nur der ETS-Programmordner kopiert wurde – die Dateien installiert der
@@ -442,6 +442,33 @@ ETS-Installer aus seinem Kompatibilitäts-MSI. Quelle nötig: `Ets6Setup.exe` od
 ### Nicht übernommen
 `EtecDOM.dll`-Patch (nur ETS 5.7.1428), case-sensitives APFS-Image (optional, Ursache unbestätigt),
 .NET 4.8 x86/x64 + VC++ (wir nutzen ARM64-.NET; VC++ nur für x86-Teile des Kompatibilitätsmodus).
+
+## 25. EIBA-sc-Kompatibilitätsschicht aus Ets6Setup.exe ✅ (`scripts/50-eiba-compat.sh`)
+
+```bash
+sudo dnf -y install 7zip msitools
+scripts/50-eiba-compat.sh /mnt/ets-daten/Ets6Setup.exe      # braucht C:\ets-arm64\gacinstall.exe (scripts/gacinstall.cs)
+```
+- `Ets6Setup.exe` = WiX-Burn-Bundle. `7z` sieht nur den UX-Container (u0…u71, BurnManifest = `u/0`); die Pakete
+  liegen im **angehängten Container** = zweites, großes CAB (`MSCF`, ~182 MB) → per Python ausschneiden →
+  Payloads a0 WebView2-Setup, **a1 `ETSCompatibilityComponents.msi`**, a2 `ETS6Setup.msi`, a3 VC++ x86.
+- `msiextract` → `Common Files/EIBA sc/EIBA.*.dll`. Laut `MsiAssembly` (Attribute 0) installiert Windows sie in den **GAC**
+  → kopiert nach `C:\Program Files (x86)\Common Files\EIBA sc` + `gacinstall.exe` (Fusion) → landen in
+  `C:\windows\assembly\GAC_MSIL` (.NET-2.0-Assemblies; .NET 4 sucht dort mit).
+- Test `tests/gacload.cs` (lädt per vollem Namen): `EIBA.Interop.EtecDOM/EtecFwk/EtecHawk`, `EIBA.DownloadImageHelper` ✅
+  aus dem GAC (ILONLY). `EIBA.Hawk.Utils` ❌ = **x86-C++/CLI** (GAC_32) – auch unter Windows x64 nur vom
+  32-Bit-Kompatibilitätsmodus `ETS6C.exe` (x86) genutzt, nicht von ETS6N. Das in ETS6N eingebettete
+  Kompatibilitäts-MSI markiert es ebenfalls als „x86“.
+- Anders als das CrossOver-Projekt keine Kopien in den ETS-Ordner (ETS-Dateien unverändert, GAC genügt).
+- ⚠️ `set -o pipefail` + `… | grep -q` → SIGPIPE bei msiinfo → Fehlschlag; Ausgabe erst in Variable.
+- Projekt des Nutzers: Geräte-Plugins (M-00FA_…) sind neue Baggage-Plugins → kein Kompatibilitätsmodus nötig.
+- Offen: echter Import eines Plugin-Geräts in ETS testen.
+
+### 32-Bit-Kompatibilitätsmodus (ETS6C.exe) ❌ nativ nicht möglich
+`ETS6C.exe`, `EtecDOM/EtecFwk/EtecCtrl/Falcon/Hawk.dll`, `EIBA.Hawk.Utils.dll` sind x86-Code (alte ETS3/4-Plugins).
+Ohne KNX-Quellcode kein ARM64-Build. Einziger Weg wäre x86-Emulation nur für diesen Prozess: Wine-ARM64
+unterstützt WoW64-Emulator-DLLs (wie Prism unter Windows on ARM), z. B. FEX-Emu (`libwow64fex.dll`) –
+der Rest von ETS bliebe nativ. Nur nötig für Produkte mit Alt-Plugins.
 
 ---
 
