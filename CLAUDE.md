@@ -32,7 +32,8 @@ Mac reproduziert. Sprache im Projekt (Doku, Kommentare, Commits): **Deutsch**.
   bildet die 53 Funktionen per Exportname auf die **Windows**-Delegattypen ab (eigene Typen je Pfad!).
 - **USB**: Mac `ets-arm64/hidbridge/knx-hidbridge` (IOHIDManager) → TCP 127.0.0.1:7531 → VM-Dienst
   `uhid-bridge` → `/dev/uhid` → `/dev/hidrawN` (udev 0666). Stick darf nicht an Parallels hängen.
-- **Anzeige** XQuartz via `ssh -Y`; **Mac-Dateien** `~/ETS-Daten` = `H:`; **Start** `scripts/ets-start.sh`
+- **Anzeige** `ETS_DISPLAY=xpra` (Standard, wenn `~/Applications/Xpra.app` da ist: xpra-Sitzung `:100` in der VM,
+  Client per Lima-SSH, Wine-DPI 192 + `--desktop-scaling=0.5`) oder `xquartz` (`ssh -Y`, DPI 96), VM-Teil `scripts/ets-vm-run.sh`; **Mac-Dateien** `~/ETS-Daten` = `H:`; **Start** `scripts/ets-start.sh`
   bzw. `~/Applications/ETS6 ARM64.app` (`scripts/make-app.sh`).
 
 ## Häufige Befehle

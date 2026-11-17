@@ -2,10 +2,18 @@
 # Erzeugt eine im Finder/Dock anklickbare App, die ets-start.sh im Hintergrund startet.
 # Aufruf: make-app.sh [Ziel-Ordner]   (Standard: ~/Applications)  -> "ETS6 ARM64.app"
 # Log der Starts: ~/Library/Logs/ets-start.log
+# Anzeige: ETS_DISPLAY=xpra|xquartz beim Aufruf setzen, um sie fest einzubauen; sonst wählt ets-start.sh
+# selbst (xpra, wenn Xpra.app vorhanden ist).
 set -euo pipefail
 DEST="${1:-$HOME/Applications}"
 APP="$DEST/ETS6 ARM64.app"
 START="$(cd "$(dirname "$0")" && pwd)/ets-start.sh"
+ENVSET=""
+case "${ETS_DISPLAY:-}" in
+  "") ;;
+  xpra|xquartz) ENVSET="export ETS_DISPLAY=$ETS_DISPLAY; " ;;
+  *) echo "ETS_DISPLAY muss xpra oder xquartz sein" >&2; exit 1 ;;
+esac
 [ -x "$START" ] || { echo "ets-start.sh nicht gefunden/ausführbar: $START" >&2; exit 1; }
 mkdir -p "$DEST"
 rm -rf "$APP"
@@ -14,7 +22,7 @@ rm -rf "$APP"
 # Finder-Apps haben nur /usr/bin:/bin im PATH -> Homebrew (limactl) ergänzen.
 SCPT="$(mktemp -t ets-app).applescript"
 cat > "$SCPT" <<EOF
-do shell script "export PATH=/opt/homebrew/bin:/usr/local/bin:/opt/X11/bin:\$PATH; mkdir -p ~/Library/Logs; nohup " & quoted form of "$START" & " >> ~/Library/Logs/ets-start.log 2>&1 < /dev/null &"
+do shell script "export PATH=/opt/homebrew/bin:/usr/local/bin:/opt/X11/bin:\$PATH; ${ENVSET}mkdir -p ~/Library/Logs; nohup " & quoted form of "$START" & " >> ~/Library/Logs/ets-start.log 2>&1 < /dev/null &"
 EOF
 osacompile -o "$APP" "$SCPT"
 rm -f "$SCPT"
@@ -42,4 +50,4 @@ fi
 [ -n "$ICON" ] && [ -f "$ICON" ] && cp "$ICON" "$APP/Contents/Resources/applet.icns"
 codesign --force --sign - "$APP"              # Ad-hoc-Signatur nach Plist-/Symboländerung erneuern
 touch "$APP"
-echo "Erstellt: $APP  (startet $START)"
+echo "Erstellt: $APP  (startet $START${ENVSET:+, $ENVSET})"

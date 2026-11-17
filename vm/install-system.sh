@@ -5,6 +5,9 @@ set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 REPO="$(cd "$HERE/.." && pwd)"
 sudo dnf -y install xorg-x11-xauth xdpyinfo mesa-dri-drivers python3
+# xpra (seamless-Anzeige, ets-start.sh ETS_DISPLAY=xpra). Fedoras xpra-Paket zieht die GObject-Bindings
+# nicht mit (Fehler „module gi has no attribute require_version“) -> explizit installieren.
+sudo dnf -y install xpra python3-gobject python3-cairo gtk3 gobject-introspection
 sudo install -m 0644 "$HERE/system/50-x11.conf"          /etc/ssh/sshd_config.d/50-x11.conf
 sudo systemctl reload sshd
 sudo install -m 0644 "$HERE/system/uhid.conf"            /etc/modules-load.d/uhid.conf

@@ -470,6 +470,76 @@ Ohne KNX-Quellcode kein ARM64-Build. Einziger Weg wäre x86-Emulation nur für d
 unterstützt WoW64-Emulator-DLLs (wie Prism unter Windows on ARM), z. B. FEX-Emu (`libwow64fex.dll`) –
 der Rest von ETS bliebe nativ. Nur nötig für Produkte mit Alt-Plugins.
 
+## 26. Anzeige über xpra (seamless) statt XQuartz ✅ (`scripts/ets-start.sh`, `ETS_DISPLAY=xpra|xquartz`)
+
+Ziel: Fenster, die sich möglichst wie Mac-Fenster anfühlen (winemac.drv ist unmöglich, Wine läuft in der VM).
+xpra-Server in der VM, nativer macOS-arm64-Client, Transport über Limas SSH – **kein offener Port**.
+
+### VM
+```bash
+sudo dnf -y install xpra                     # 6.5.4 (Fedora 45)
+xpra start :100 …                            # ❌ "module 'gi' has no attribute 'require_version'"
+sudo dnf -y install python3-gobject python3-cairo gtk3   # ❌ "Typelib file for namespace 'xlib' not found"
+sudo dnf -y install gobject-introspection    # ✅
+```
+⚠️ Fedoras xpra-Paket zieht die GObject-Bindings nicht mit (unter `site-packages/gi` lag nur ein leerer,
+paketloser `overrides`-Ordner). Alle vier Pakete stehen jetzt in `vm/install-system.sh`.
+
+### Mac
+- Homebrew-Cask `xpra` ist **deaktiviert** („does not pass the macOS Gatekeeper check“, seit 2026-09-01).
+- Offizielles DMG `https://xpra.org/dists/MacOS/arm64/Xpra-arm64-6.5.6-r0.dmg` (84,5 MB), SHA1 gegen
+  `….dmg.sha1` geprüft, `codesign`: Developer ID „Antoine Martin (YP7MH6R5DZ)“, Notarisierung angeheftet,
+  `spctl`: accepted → `ditto` nach `~/Applications/Xpra.app` (kein Admin, kein Quarantäne-Eingriff). arm64-nativ.
+- CLI: `Xpra.app/Contents/MacOS/Xpra` (nicht `Contents/Helpers/Xpra` – der Helfer hat keine Bundle-Identität,
+  seine Fenster sind für macOS keinem App-Bundle zugeordnet).
+
+### Start (`ets-start.sh`, VM-Teil `scripts/ets-vm-run.sh`)
+```bash
+ETS_DISPLAY=xpra ets-arm64/scripts/ets-start.sh       # Standard, wenn Xpra.app gefunden wird
+ETS_DISPLAY=xquartz ets-arm64/scripts/ets-start.sh    # bisheriger Weg
+ETS_DISPLAY=xpra ets-arm64/scripts/make-app.sh        # Wahl fest in „ETS6 ARM64.app“ einbauen (sonst automatisch)
+```
+- `ets-start.sh` legt bei jedem Start `ets-vm-run.sh` nach `~/.local/share/ets-arm64/` in der VM (setzt die
+  Wine-Umgebung, `wineserver -k`, startet `C:\ets-arm64\ETS6.exe`, wartet). Beide Anzeigewege nutzen es.
+- VM: `xpra start :100 --daemon=yes --start-child=ets-vm-run.sh --exit-with-children=yes` (Ton/Webcam/Drucken/
+  mDNS aus). Mac: `Xpra attach ssh://lima-wine-arm64/100 --ssh="ssh -F ~/.lima/wine-arm64/ssh.config …"`.
+- **Retina:** Client `--desktop-scaling=0.5` (virtueller Bildschirm 3456×2234) + Wine-DPI 192 (`ETS_DPI`,
+  `LogPixels` in `HKCU\Control Panel\Desktop`, `HKCU\Software\Wine\Fonts`, `HKCC\Software\Fonts`) → WPF rendert
+  in doppelter Auflösung, xpra zeigt 1:1 → scharf. XQuartz-Weg setzt 96 zurück. `ETS_XPRA_SCALE=1` für Nicht-Retina.
+  ⚠️ Erster Versuch blieb unscharf/klein: `wine reg add` startete den wineserver, ETS lief in derselben Sitzung
+  mit der alten System-DPI (win32u liest sie beim Sitzungsstart). Lösung: nach Änderung `wineserver -k` und
+  erst dann ETS; Änderung nur bei abweichendem Wert (sonst kein Zusatz-Neustart).
+- **Dongle-Brücke** wie bisher vor dem ETS-Start. Neu: läuft schon eine `knx-hidbridge` (z. B. Schleife einer
+  früheren Sitzung), wird sie **nicht** beendet (früher `pkill` → zwei Schleifen stritten um Stick/Port).
+- **Doppelstart-Schutz** bleibt. Im xpra-Modus verbindet ein erneuter Start mit der laufenden Sitzung
+  („ETS läuft bereits in der xpra-Sitzung :100 – verbinde erneut“) – ETS überlebt das Schließen des Clients.
+  Das Skript bleibt aktiv, solange die Sitzung lebt (hält die Brücke). `ETS_FORCE_RESTART=1` beendet die Sitzung.
+- ⚠️ Client-Option `--file-transfer=no` → Traceback im macOS-Menü (`'XpraClient' object has no attribute
+  'remote_file_transfer'`) → nur serverseitig abgeschaltet.
+- ⚠️ Bei ausgeschaltetem Mac-Bildschirm meldet der Client „cannot access display“ und endet; ETS läuft in der
+  Sitzung weiter, erneuter Start verbindet.
+
+### Test (echter Dongle)
+Start über `ets-start.sh`, ETS-Log: „Dongle added“ + **„pre-check: User is licensed“** ✅,
+Host-Log „53 Funktionen auf Windows-Delegattypen abgebildet, 0 fehlen“ ✅.
+
+| Kriterium | XQuartz (`ssh -Y`) | xpra 6.5 seamless |
+|---|---|---|
+| Schärfe (Retina) | 96 dpi, 2× hochskaliert → weich | **192 dpi, 1:1 → scharf** (`screenshots/04-…`) |
+| Fenster/Dock | alle Fenster gehören zur App „XQuartz“ (X-Symbol) | eigene macOS-Fenster der App „Xpra“; Titel „ETS6 - Übersicht“ (`--title=@title@`); Win32-Dialoge (winecfg) bekommen eine native Titelleiste mit Ampelknöpfen. ETS-Hauptfenster in beiden mit eigener WPF-Titelleiste |
+| Menüleiste | XQuartz-Menü | Xpra-Menü (keine ETS-Menüs in der Mac-Menüleiste, beide gleich) |
+| Zwischenablage Mac↔VM | nicht neu geprüft | ✅ beide Richtungen mit Umlauten/€ (`pbcopy`/`pbpaste` ↔ `xclip` auf `:100`; Wine nutzt dieselbe X-Zwischenablage) |
+| Tastatur (österr. Layout) | Mac-Layout, Ctrl für Kürzel | ✅ Client überträgt die echte Mac-Belegung (Keymap: ü, ⌥L=@, ⌥E=€, ⌥5=[); in ETS ergibt die Z-Taste „y“ ✅. „layout=us“ im Log ist nur die Bezeichnung. **Cmd↔Ctrl getauscht** (`swap-keys=on`) → Cmd+C/V wirken in ETS |
+| Popups/Menüs WPF | ✅ (§17) | ✅ Benutzer-Dropdown als eigenes Popup an richtiger Stelle, scharf; Einstellungen (Overlay) ✅ (`screenshots/03-…`) |
+| Startzeit Skript → „User is licensed“ (VM läuft) | 14 s | 13 s (einmalig ~33 s nach Wechsel der DPI) |
+| Scrollen / Projekt öffnen | – | nicht gemessen (keine Nutzerprojekte geöffnet); ETS-Rechenzeit identisch (gleiche VM), Unterschied nur Bildübertragung |
+| Sitzung | XQuartz beenden → ETS verliert X-Verbindung | Client schließen → ETS läuft weiter, Neuverbinden per Start |
+| Installation Mac | `brew --cask xquartz`, Admin-Passwort | DMG 84,5 MB nach `~/Applications`, kein Admin |
+
+**Empfehlung: xpra als Standard** (Retina-Schärfe, eigenständige Fenster, Cmd-Kürzel, Sitzung überlebt den
+Client). XQuartz bleibt als `ETS_DISPLAY=xquartz` erhalten. Offen: Handtest der Tastatur/Zwischenablage direkt in
+ETS-Eingabefeldern mit echter Tastatur, Scrollen in großen Projekten.
+
 ---
 
 ## Offene Punkte / Ideen

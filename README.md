@@ -16,7 +16,7 @@ ohne Rosetta und ohne x86/x64-Emulation – inklusive **USB-Lizenz-Dongle**.
 | ETS-Start | ARM64-Launcher `ETS6.exe` + Host `ETS6N.exe` (startet das unveränderte ETS in eigener AppDomain) |
 | Lizenz-Dongle | Host lädt die von KNX mitgelieferte **Linux-ARM64**-DevKit-Bibliothek über eine eigene `libdl.so`-Brücke |
 | USB | `knx-hidbridge` (macOS, IOHIDManager) → TCP → `uhid-bridge.py` (VM, `/dev/uhid`) → virtuelles `/dev/hidrawN` |
-| Anzeige | XQuartz (X11-Forwarding über SSH) |
+| Anzeige | xpra seamless (Server in der VM, nativer macOS-Client, Retina-scharf, über SSH) – alternativ XQuartz (`ETS_DISPLAY=xquartz`) |
 | Mac-Dateien | `~/ETS-Daten` = Laufwerk `H:` |
 | Start | `ets-arm64/scripts/ets-start.sh` bzw. „ETS6 ARM64.app“ (`make-app.sh`) |
 
