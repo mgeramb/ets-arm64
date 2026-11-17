@@ -2,18 +2,22 @@
 # Erzeugt eine im Finder/Dock anklickbare App, die ets-start.sh im Hintergrund startet.
 # Aufruf: make-app.sh [Ziel-Ordner]   (Standard: ~/Applications)  -> "ETS6 ARM64.app"
 # Log der Starts: ~/Library/Logs/ets-start.log
-# Anzeige: ETS_DISPLAY=xpra|xquartz beim Aufruf setzen, um sie fest einzubauen; sonst wählt ets-start.sh
-# selbst (xpra, wenn Xpra.app vorhanden ist).
+# Anzeige: ETS_DISPLAY=xpra|xquartz beim Aufruf setzen, um sie fest einzubauen -> eigene App
+# "ETS6 ARM64 (xpra).app" bzw. "ETS6 ARM64 (XQuartz).app" (eigene Bundle-Kennung), so dass beide Wege
+# nebeneinander im Dock/Launchpad liegen. Ohne ETS_DISPLAY wählt ets-start.sh selbst (xpra, wenn
+# Xpra.app vorhanden ist). Name überschreibbar: ETS_APP_NAME="…".
 set -euo pipefail
 DEST="${1:-$HOME/Applications}"
-APP="$DEST/ETS6 ARM64.app"
 START="$(cd "$(dirname "$0")" && pwd)/ets-start.sh"
-ENVSET=""
+ENVSET=""; NAME="ETS6 ARM64"; BUNDLE_ID=org.ets-arm64.launcher
 case "${ETS_DISPLAY:-}" in
   "") ;;
-  xpra|xquartz) ENVSET="export ETS_DISPLAY=$ETS_DISPLAY; " ;;
+  xpra)    ENVSET="export ETS_DISPLAY=xpra; ";    NAME="ETS6 ARM64 (xpra)";    BUNDLE_ID+=.xpra ;;
+  xquartz) ENVSET="export ETS_DISPLAY=xquartz; "; NAME="ETS6 ARM64 (XQuartz)"; BUNDLE_ID+=.xquartz ;;
   *) echo "ETS_DISPLAY muss xpra oder xquartz sein" >&2; exit 1 ;;
 esac
+NAME="${ETS_APP_NAME:-$NAME}"
+APP="$DEST/$NAME.app"
 [ -x "$START" ] || { echo "ets-start.sh nicht gefunden/ausführbar: $START" >&2; exit 1; }
 mkdir -p "$DEST"
 rm -rf "$APP"
@@ -28,8 +32,8 @@ osacompile -o "$APP" "$SCPT"
 rm -f "$SCPT"
 
 # Kennung + kein Dock-Symbol während des kurzen Applet-Laufs
-/usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier org.ets-arm64.launcher" "$APP/Contents/Info.plist" 2>/dev/null \
-  || /usr/libexec/PlistBuddy -c "Add :CFBundleIdentifier string org.ets-arm64.launcher" "$APP/Contents/Info.plist"
+/usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $BUNDLE_ID" "$APP/Contents/Info.plist" 2>/dev/null \
+  || /usr/libexec/PlistBuddy -c "Add :CFBundleIdentifier string $BUNDLE_ID" "$APP/Contents/Info.plist"
 /usr/libexec/PlistBuddy -c "Add :LSUIElement bool true" "$APP/Contents/Info.plist" 2>/dev/null || true
 
 # Symbol: ETS_ICON=/pfad/icon.icns, sonst aus der lokalen ETS-Installation (ETS_DIR, Standard ~/ETS6)

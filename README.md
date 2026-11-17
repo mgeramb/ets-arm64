@@ -18,7 +18,7 @@ ohne Rosetta und ohne x86/x64-Emulation – inklusive **USB-Lizenz-Dongle**.
 | USB | `knx-hidbridge` (macOS, IOHIDManager) → TCP → `uhid-bridge.py` (VM, `/dev/uhid`) → virtuelles `/dev/hidrawN` |
 | Anzeige | xpra seamless (Server in der VM, nativer macOS-Client, Retina-scharf, über SSH) – alternativ XQuartz (`ETS_DISPLAY=xquartz`) |
 | Mac-Dateien | `~/ETS-Daten` = Laufwerk `H:` |
-| Start | `ets-arm64/scripts/ets-start.sh` bzw. „ETS6 ARM64.app“ (`make-app.sh`) |
+| Start | `ets-arm64/scripts/ets-start.sh` bzw. „ETS6 ARM64.app“ (`make-app.sh`; zum Vergleich `ETS_DISPLAY=xpra|xquartz` → „ETS6 ARM64 (xpra)“ / „(XQuartz)“) |
 
 ## Stand
 

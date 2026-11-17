@@ -497,8 +497,15 @@ paketloser `overrides`-Ordner). Alle vier Pakete stehen jetzt in `vm/install-sys
 ```bash
 ETS_DISPLAY=xpra ets-arm64/scripts/ets-start.sh       # Standard, wenn Xpra.app gefunden wird
 ETS_DISPLAY=xquartz ets-arm64/scripts/ets-start.sh    # bisheriger Weg
-ETS_DISPLAY=xpra ets-arm64/scripts/make-app.sh        # Wahl fest in „ETS6 ARM64.app“ einbauen (sonst automatisch)
+ets-arm64/scripts/make-app.sh                         # „ETS6 ARM64.app“, Anzeige automatisch
+ETS_DISPLAY=xpra    ets-arm64/scripts/make-app.sh /Applications   # „ETS6 ARM64 (xpra).app“
+ETS_DISPLAY=xquartz ets-arm64/scripts/make-app.sh /Applications   # „ETS6 ARM64 (XQuartz).app“
 ```
+- Zum Vergleichen zwei Apps nebeneinander: mit festem `ETS_DISPLAY` hängt `make-app.sh` den Anzeigenamen an
+  App-Name und Bundle-Kennung (`org.ets-arm64.launcher.xpra`/`.xquartz`) an, damit Launch Services sie
+  auseinanderhält. Läuft ETS schon über den anderen Weg, meldet die App nur „ETS läuft bereits“ (getestet:
+  XQuartz-App bei laufender xpra-Sitzung → `Anzeige: xquartz / ETS läuft bereits – kein Neustart.`). Zum
+  Wechseln ETS zuerst beenden; der erste Start nach dem Wechsel dauert wegen der DPI-Umstellung etwas länger.
 - `ets-start.sh` legt bei jedem Start `ets-vm-run.sh` nach `~/.local/share/ets-arm64/` in der VM (setzt die
   Wine-Umgebung, `wineserver -k`, startet `C:\ets-arm64\ETS6.exe`, wartet). Beide Anzeigewege nutzen es.
 - VM: `xpra start :100 --daemon=yes --start-child=ets-vm-run.sh --exit-with-children=yes` (Ton/Webcam/Drucken/
